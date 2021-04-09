@@ -176,16 +176,13 @@ def pytest_sessionfinish(session, exitstatus):
         print("Skipping uploading of test results because --no-docker-discovery set.")
 
     if exitstatus != 0 and session.testsfailed > 0 and not session.shouldfail:
+        buildid = os.getenv("BUILD_BUILDID")
+        if buildid:
+            buildid = f"\nSee summary at https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
         print(
-            "##vso[task.logissue type=error;]{0} test(s) failed, {1} test(s) collected.".format(
-                session.testsfailed, session.testscollected
-            )
+            f"##vso[task.logissue type=error;]{session.testsfailed} test(s) out of {session.testscollected} test(s) failed."
+            + buildid
         )
-        print("=" * 80)
-        print("=" * 80)
-        print(os.getenv("BUILD_BUILDID"))
-        print("=" * 80)
-        print("=" * 80)
         print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
 
@@ -274,7 +271,6 @@ def pytest_runtest_logreport(report):
         percent = (100 * tests_taken) // tests_count
         if percent != percent_reported:
             print(f"##vso[task.setprogress value={percent};]running tests")
-            print("TESTS TAKEN:", tests_taken, "out of", tests_count, f"= {percent}%")
             pytest_runtest_logreport.percent_reported = percent
 
 
