@@ -247,6 +247,11 @@ def pytest_runtest_logreport(report):
         print("LOGREPORT:", report)
         print(dir(report))
 
+    if report.when == "teardown":
+        tests_taken = getattr(pytest_runtest_logreport, "tests_taken", 0) + 1
+        pytest_runtest_logreport.tests_taken = tests_taken
+        print("TESTS TAKEN:", tests_taken)
+
 
 @pytest.fixture
 def record_pipelines_property(record_nunit_property):
