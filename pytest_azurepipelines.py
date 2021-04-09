@@ -52,18 +52,8 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.hookimpl(trylast=True)
+@pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
-    print("=" * 80)
-    print("=" * 80)
-    print("=" * 80)
-    print("=" * 80)
-    print(config.getoption("force_xunit"))
-    print("=" * 80)
-    print(config.getoption("--junitxml"))
-    print(config.option.xmlpath)
-    print("=" * 80)
-
     if not config.getoption("force_xunit"):
         nunit_xmlpath = config.getoption("--nunitxml")
         if not nunit_xmlpath:
