@@ -260,7 +260,7 @@ def pytest_runtestloop(session):
 
 
 def pytest_runtest_logstart(nodeid, location):
-    print(nodeid, location)
+    print(nodeid, end=" ")
 
 
 # def pytest_runtest_logfinish(self):
@@ -270,22 +270,15 @@ def pytest_runtest_logstart(nodeid, location):
 
 
 def pytest_runtest_logreport(report):
+    if report.when == "call":
+        print(report.outcome)
     if report.outcome == "failed":
         print("\n")
         print("=" * 80)
-        print("LOGREPORT:", report)
-        print(dir(report))
-        print(report.nodeid)
-        if report.location:
-            print(
-                f"file={report.location[0]}, line={report.location[1]}, domain={report.location[2]}"
-            )
         print(
-            "##vso[task.logissue type=error]Failed: "
+            f"##vso[task.logissue type=error]Test failure: {report.nodeid}%0D%0A"
             + report.longreprtext.replace("\n", "%0D%0A")
         )
-        # test failure in {report.location[0]}:{report.location[1]}%0D%0Amultiline test"
-        print("=" * 80)
         print("=" * 80)
 
     if report.when == "teardown":
