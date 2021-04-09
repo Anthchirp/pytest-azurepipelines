@@ -150,10 +150,18 @@ def pytest_sessionfinish(session, exitstatus):
         xmlpath = session.config.option.xmlpath
         mode = "xUnit"
 
+    print("=" * 80)
+    print("=" * 80)
+    print("=" * 80)
+    print(xmlpath)
+    print("=" * 80)
+    print("=" * 80)
+
     # This mirrors https://github.com/pytest-dev/pytest/blob/38adb23bd245329d26b36fd85a43aa9b3dd0406c/src/_pytest/junitxml.py#L368-L369
     xmlabspath = os.path.normpath(
         os.path.abspath(os.path.expanduser(os.path.expandvars(xmlpath)))
     )
+    print(xmlabspath)
     mountinfo = None
     if not session.config.getoption("no_docker_discovery") and os.path.isfile(
         "/.dockerenv"
