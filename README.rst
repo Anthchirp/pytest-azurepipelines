@@ -6,19 +6,7 @@ pytest-azurepipelines
    :target: https://dev.azure.com/AnthonyShaw/pytest-azurepipelines/_build/latest?definitionId=3?branchName=master
    :alt: Build status
 
-.. image:: https://img.shields.io/pypi/v/pytest-azurepipelines.svg
-    :target: https://pypi.org/project/pytest-azurepipelines
-    :alt: PyPI version
-
-.. image:: https://img.shields.io/pypi/pyversions/pytest-azurepipelines.svg
-    :target: https://pypi.org/project/pytest-azurepipelines
-    :alt: Python versions
-
-.. image:: https://img.shields.io/pypi/dm/pytest-azurepipelines.svg
-     :target: https://pypi.python.org/pypi/pytest-azurepipelines/
-     :alt: PyPI download month
-
-Making Pytest easier to use with Microsoft Azure Pipelines.
+Fork of https://github.com/tonybaloney/pytest-azurepipelines with slightly different aims.
 
 Just run pytest with this plugin and see your test results in the Azure Pipelines UI!
 
@@ -32,18 +20,12 @@ Features:
 * Automatically formats code coverage and uploads coverage data if pytest-cov is installed
 * Supports running inside a Docker container and automatically uploads test results
 
-Use this plugin with the [vs-pytest](https://marketplace.visualstudio.com/items?itemName=AnthonyShaw.vss-pytest) extension installed to see granular pytest data inside the Azure UI:
-
-.. image:: https://github.com/tonybaloney/pytest-azurepipelines/raw/master/screenshot.png
-    :width: 600px
-    :align: center
-
 Installation
 ------------
 
-You can install "pytest-azurepipelines" via `pip`_ from `PyPI`_::
+You can install "pytest-azurepipelines" via `pip`_::
 
-    $ pip install pytest-azurepipelines
+    $ pip install git+https://github.com/anthchirp/pytest-azurepipelines.git
 
 Usage
 -----
@@ -56,7 +38,7 @@ Here is an example of installing the plugin and running the tests.
 
   - script: |
       python -m pip install --upgrade pip
-      pip install pytest pytest-azurepipelines
+      pip install pytest git+https://github.com/anthchirp/pytest-azurepipelines.git
       pip install -e .
     displayName: 'Install dependencies'
 
