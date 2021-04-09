@@ -257,6 +257,9 @@ def pytest_runtest_logreport(report):
                 f"file={report.location[0]}, line={report.location[1]}, domain={report.location[2]}"
             )
         print("=" * 80)
+        print(
+            f"##vso[task.logissue type=error;sourcepath={report.location[0]};linenumber={report.location[1]}]test failure"
+        )
 
     if report.when == "teardown":
         tests_count = getattr(pytest_runtestloop, "test_count", 0)
