@@ -243,7 +243,9 @@ def pytest_warning_recorded(warning_message, *args, **kwargs):
 
 
 def pytest_runtest_logreport(report):
-    print("LOGREPORT:", report)
+    if report.outcome == "failed":
+        print("LOGREPORT:", report)
+        print(dir(report))
 
 
 @pytest.fixture
