@@ -267,7 +267,7 @@ def pytest_runtest_logreport(report):
         percent_reported = getattr(pytest_runtest_logreport, "percent_reported", -1)
         percent = (100 * tests_taken) // tests_count
         if percent != percent_reported:
-            print(f"##vso[task.setprogress value={percent};]running tests")
+            print(f"##vso[task.setprogress value={percent};]running tests", end="")
             pytest_runtest_logreport.percent_reported = percent
 
 
