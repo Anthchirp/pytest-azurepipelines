@@ -262,6 +262,20 @@ def pytest_runtestloop(session):
 
 
 def pytest_runtest_logreport(report):
+    if report.outcome == "failed":
+        print("\n")
+        print("=" * 80)
+        print("LOGREPORT:", report)
+        print(dir(report))
+        if report.location:
+            print(
+                f"file={report.location[0]}, line={report.location[1]}, domain={report.location[2]}"
+            )
+        print(
+            f"##vso[task.logissue type=error]test failure in {report.location[0]}:{report.location[1]}%0D%0Amultiline test"
+        )
+        print("=" * 80)
+
     if report.when == "teardown":
         tests_count = getattr(pytest_runtestloop, "test_count", 0)
         tests_taken = getattr(pytest_runtest_logreport, "tests_taken", 0) + 1
