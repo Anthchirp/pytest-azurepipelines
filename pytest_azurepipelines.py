@@ -259,18 +259,29 @@ def pytest_runtestloop(session):
     pytest_runtestloop.test_count = len(session.items)
 
 
+def pytest_runtest_logstart(nodeid, location):
+    print(nodeid, location)
+
+
+# def pytest_runtest_logfinish(self):
+#        # prevent the default implementation to try to show
+#        # pytest's default progress
+#        pass
+
+
 def pytest_runtest_logreport(report):
     if report.outcome == "failed":
         print("\n")
         print("=" * 80)
         print("LOGREPORT:", report)
         print(dir(report))
+        print(report.nodeid)
         if report.location:
             print(
                 f"file={report.location[0]}, line={report.location[1]}, domain={report.location[2]}"
             )
         print(
-            "##vso[task.logissue type=error]"
+            "##vso[task.logissue type=warning]Failed: "
             + report.longreprtext.replace("\n", "%0D%0A")
         )
         # test failure in {report.location[0]}:{report.location[1]}%0D%0Amultiline test"
@@ -284,7 +295,7 @@ def pytest_runtest_logreport(report):
         percent_reported = getattr(pytest_runtest_logreport, "percent_reported", -1)
         percent = (100 * tests_taken) // tests_count
         if percent != percent_reported:
-            print(f"\n##vso[task.setprogress value={percent};]running tests", end="")
+            print(f"##vso[task.setprogress value={percent};]running tests")
             pytest_runtest_logreport.percent_reported = percent
 
 
