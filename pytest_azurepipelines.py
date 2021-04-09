@@ -5,7 +5,7 @@ import io
 import pkg_resources
 import sys
 
-import pytest
+import pytest.exitcode
 
 __version__ = "1.0.0rc5"
 
@@ -169,6 +169,7 @@ def pytest_sessionfinish(session, exitstatus):
                 session.testsfailed, session.testscollected
             )
         )
+        session.exitstatus = pytest.ExitCode.OK
 
     if not session.config.getoption("no_coverage_upload") and not session.config.getoption("no_docker_discovery") and session.config.pluginmanager.has_plugin("pytest_cov"):
         covpath = os.path.normpath(
