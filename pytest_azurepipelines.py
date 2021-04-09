@@ -5,7 +5,7 @@ import io
 import pkg_resources
 import sys
 
-import pytest.exitcode
+import pytest
 
 __version__ = "1.0.0rc5"
 
