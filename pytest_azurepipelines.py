@@ -71,6 +71,7 @@ def pytest_configure(config):
     else:
         xmlpath = config.getoption("--junitxml")
         if not xmlpath:
+            print("SET")
             config.option.xmlpath = DEFAULT_PATH
         if not config.getini("junit_family"):
             config._inicache["junit_family"] = "xunit2"  # YOLO
@@ -153,15 +154,17 @@ def pytest_sessionfinish(session, exitstatus):
     print("=" * 80)
     print("=" * 80)
     print("=" * 80)
+    print(mode)
     print(xmlpath)
-    print("=" * 80)
-    print("=" * 80)
 
     # This mirrors https://github.com/pytest-dev/pytest/blob/38adb23bd245329d26b36fd85a43aa9b3dd0406c/src/_pytest/junitxml.py#L368-L369
     xmlabspath = os.path.normpath(
         os.path.abspath(os.path.expanduser(os.path.expandvars(xmlpath)))
     )
     print(xmlabspath)
+    print("=" * 80)
+    print("=" * 80)
+
     mountinfo = None
     if not session.config.getoption("no_docker_discovery") and os.path.isfile(
         "/.dockerenv"
