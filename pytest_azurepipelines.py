@@ -141,19 +141,10 @@ def pytest_sessionfinish(session, exitstatus):
         xmlpath = session.config.option.xmlpath
         mode = "xUnit"
 
-    print("=" * 80)
-    print("=" * 80)
-    print("=" * 80)
-    print(mode)
-    print(xmlpath)
-
     # This mirrors https://github.com/pytest-dev/pytest/blob/38adb23bd245329d26b36fd85a43aa9b3dd0406c/src/_pytest/junitxml.py#L368-L369
     xmlabspath = os.path.normpath(
         os.path.abspath(os.path.expanduser(os.path.expandvars(xmlpath)))
     )
-    print(xmlabspath)
-    print("=" * 80)
-    print("=" * 80)
 
     mountinfo = None
     if not session.config.getoption("no_docker_discovery") and os.path.isfile(
@@ -169,11 +160,15 @@ def pytest_sessionfinish(session, exitstatus):
         xmlabspath = apply_docker_mappings(mountinfo, xmlabspath)
 
     # Set the run title in the UI to a configurable setting
-    description = session.config.option.azure_run_title.replace("'", "")
+    description = (
+        session.config.option.azure_run_title.replace("'", "")
+        .replace(";", "")
+        .replace("]", "")
+    )
 
     if not session.config.getoption("no_docker_discovery"):
         print(
-            "##vso[results.publish type={2};runTitle='{1}';publishRunAttachments=true;]{0}".format(
+            "##vso[results.publish type={2};runTitle={1};publishRunAttachments=true;]{0}".format(
                 xmlabspath, description, mode
             )
         )
