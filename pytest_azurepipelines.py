@@ -177,12 +177,23 @@ def pytest_sessionfinish(session, exitstatus):
 
     if exitstatus != 0 and session.testsfailed > 0 and not session.shouldfail:
         buildid = os.getenv("BUILD_BUILDID")
-        if buildid:
-            buildid = f"\nSee summary at https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
         print(
-            f"##vso[task.logissue type=error;]{session.testsfailed} test(s) out of {session.testscollected} test(s) failed."
-            + buildid
+            f"##vso[task.logissue type=error;]{session.testsfailed} test(s) out of {session.testscollected} test(s) failed. "
+            f"See summary at https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
         )
+
+        with open("result.md", "w") as fh:
+            fh.write("### I wonder\n")
+            fh.write("what this may look like.\n\n")
+            fh.write("Results of the test run: ")
+            fh.write(
+                f"{session.testsfailed} test(s) out of {session.testscollected} test(s) failed.\n"
+            )
+            fh.write("More information available at:\n")
+            fh.write(
+                f"https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
+            )
+        print("##vso[task.uploadsummary]result.md")
         print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
 
