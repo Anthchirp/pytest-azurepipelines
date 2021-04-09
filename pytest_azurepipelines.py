@@ -264,10 +264,12 @@ def pytest_runtest_logreport(report):
     if report.when == "teardown":
         tests_count = getattr(pytest_runtestloop, "test_count", 0)
         tests_taken = getattr(pytest_runtest_logreport, "tests_taken", 0) + 1
-        percent_reported = getattr(pytest_runtest_logreport, "percent_reported", 0)
         pytest_runtest_logreport.tests_taken = tests_taken
-        p = (100 * tests_taken) // tests_count
-        print("TESTS TAKEN:", tests_taken, "out of", tests_count, f"= {p}%")
+        percent_reported = getattr(pytest_runtest_logreport, "percent_reported", -1)
+        percent = (100 * tests_taken) // tests_count
+        if percent != percent_reported:
+            print(f"##vso[task.setprogress value={percent};]running tests")
+            print("TESTS TAKEN:", tests_taken, "out of", tests_count, f"= {percent}%")
 
 
 @pytest.fixture
