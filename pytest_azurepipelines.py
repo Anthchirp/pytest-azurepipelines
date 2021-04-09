@@ -175,6 +175,7 @@ def pytest_sessionfinish(session, exitstatus):
                 session.testsfailed, session.testscollected
             )
         )
+        print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
 
     if (
