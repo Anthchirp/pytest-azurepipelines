@@ -193,7 +193,9 @@ def pytest_sessionfinish(session, exitstatus):
             fh.write(
                 f"https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
             )
-        print("##vso[task.uploadsummary]result.md")
+        print(
+            "##vso[task.uploadsummary]" + os.path.normpath(os.path.abspath("result.md"))
+        )
         print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
 
@@ -267,7 +269,7 @@ def pytest_runtest_logreport(report):
         percent_reported = getattr(pytest_runtest_logreport, "percent_reported", -1)
         percent = (100 * tests_taken) // tests_count
         if percent != percent_reported:
-            print(f"##vso[task.setprogress value={percent};]running tests", end="")
+            print(f"##vso[task.setprogress value={percent};]running tests")
             pytest_runtest_logreport.percent_reported = percent
 
 
