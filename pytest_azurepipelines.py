@@ -181,19 +181,18 @@ def pytest_sessionfinish(session, exitstatus):
             f"##vso[task.logissue type=error;]{session.testsfailed} test(s) out of {session.testscollected} test(s) failed. "
         )
 
-        with open("result.md", "w") as fh:
-            fh.write("# I wonder\n")
+        with open(f"{description}.md", "w") as fh:
+            fh.write("### I wonder\n")
             fh.write("what this may look like.\n\n")
-            fh.write("Results of the test run: ")
+            fh.write(
+                f"[Results of the test run:](https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab)"
+            )
             fh.write(
                 f"{session.testsfailed} test(s) out of {session.testscollected} test(s) failed.\n"
             )
-            fh.write("More information available at:\n")
-            fh.write(
-                f"https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
-            )
         print(
-            "##vso[task.uploadsummary]" + os.path.normpath(os.path.abspath("result.md"))
+            "##vso[task.uploadsummary]"
+            + os.path.normpath(os.path.abspath(f"{description}.md"))
         )
         print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
