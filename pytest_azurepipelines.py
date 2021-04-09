@@ -272,6 +272,10 @@ def pytest_runtest_logreport(report):
         print(
             f"##vso[task.logissue type=error]test failure in {report.location[0]}:{report.location[1]}%0D%0Amultiline test"
         )
+        print(report.longrepr)
+        print("=" * 80)
+        print("=" * 80)
+        print(report.longreprtext)
         print("=" * 80)
 
     if report.when == "teardown":
