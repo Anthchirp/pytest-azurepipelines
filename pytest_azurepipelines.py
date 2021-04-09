@@ -281,7 +281,7 @@ def pytest_runtest_logreport(report):
                 f"file={report.location[0]}, line={report.location[1]}, domain={report.location[2]}"
             )
         print(
-            "##vso[task.logissue type=warning]Failed: "
+            "##vso[task.logissue type=error]Failed: "
             + report.longreprtext.replace("\n", "%0D%0A")
         )
         # test failure in {report.location[0]}:{report.location[1]}%0D%0Amultiline test"
