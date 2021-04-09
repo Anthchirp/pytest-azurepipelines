@@ -263,10 +263,10 @@ def pytest_runtest_logstart(nodeid, location):
     print(nodeid, end=" ")
 
 
-# def pytest_runtest_logfinish(self):
-#        # prevent the default implementation to try to show
-#        # pytest's default progress
-#        pass
+def pytest_runtest_logfinish():
+    # prevent the default implementation to try to show
+    # pytest's default progress
+    pass
 
 
 def pytest_runtest_logreport(report):
