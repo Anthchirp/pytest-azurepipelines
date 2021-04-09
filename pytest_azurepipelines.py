@@ -242,6 +242,10 @@ def pytest_warning_recorded(warning_message, *args, **kwargs):
     print("##vso[task.logissue type=warning;]{0}".format(str(warning_message.message)))
 
 
+def pytest_runtestloop(session):
+    pytest_runtestloop.test_count = len(session.items)
+
+
 def pytest_runtest_logreport(report):
     if report.outcome == "failed":
         print("\n")
@@ -255,9 +259,12 @@ def pytest_runtest_logreport(report):
         print("=" * 80)
 
     if report.when == "teardown":
+        tests_count = getattr(pytest_runtestloop, "test_count", 0)
         tests_taken = getattr(pytest_runtest_logreport, "tests_taken", 0) + 1
+        percent_reported = getattr(pytest_runtest_logreport, "percent_reported", 0)
         pytest_runtest_logreport.tests_taken = tests_taken
-        print("TESTS TAKEN:", tests_taken)
+        p = (100 * tests_taken) // tests_count
+        print("TESTS TAKEN:", tests_taken, "out of", tests_count, f"= {p}%")
 
 
 @pytest.fixture
