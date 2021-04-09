@@ -181,6 +181,11 @@ def pytest_sessionfinish(session, exitstatus):
                 session.testsfailed, session.testscollected
             )
         )
+        print("=" * 80)
+        print("=" * 80)
+        print(os.getenv("BUILD_BUILDID"))
+        print("=" * 80)
+        print("=" * 80)
         print("##vso[task.complete result=Failed;]Marking task as failed...")
         session.exitstatus = pytest.ExitCode.OK
 
@@ -270,6 +275,7 @@ def pytest_runtest_logreport(report):
         if percent != percent_reported:
             print(f"##vso[task.setprogress value={percent};]running tests")
             print("TESTS TAKEN:", tests_taken, "out of", tests_count, f"= {percent}%")
+            pytest_runtest_logreport.percent_reported = percent
 
 
 @pytest.fixture
