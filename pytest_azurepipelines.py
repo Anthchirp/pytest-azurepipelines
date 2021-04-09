@@ -179,11 +179,10 @@ def pytest_sessionfinish(session, exitstatus):
         buildid = os.getenv("BUILD_BUILDID")
         print(
             f"##vso[task.logissue type=error;]{session.testsfailed} test(s) out of {session.testscollected} test(s) failed. "
-            f"See summary at https://dev.azure.com/zocalo/python-zocalo/_build/results?buildId={buildid}&view=ms.vss-test-web.build-test-results-tab"
         )
 
         with open("result.md", "w") as fh:
-            fh.write("### I wonder\n")
+            fh.write("# I wonder\n")
             fh.write("what this may look like.\n\n")
             fh.write("Results of the test run: ")
             fh.write(
